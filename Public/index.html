@@ -1,0 +1,2496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Company Management System</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f6f9;
+            color: #222;
+        }
+
+        /* SIDEBAR */
+
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 240px;
+            height: 100vh;
+            background: #172033;
+            color: white;
+            padding: 20px 15px;
+            overflow-y: auto;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .nav-btn {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 8px;
+            border: none;
+            background: transparent;
+            color: white;
+            text-align: left;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        .nav-btn:hover,
+        .nav-btn.active {
+            background: #2d6cdf;
+        }
+
+        /* MAIN */
+
+        .main {
+            margin-left: 240px;
+            padding: 25px;
+        }
+
+        /* TOPBAR */
+
+        .topbar {
+            background: white;
+            padding: 18px 25px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        .topbar h1 {
+            font-size: 25px;
+        }
+
+        .date {
+            color: #777;
+        }
+
+        /* SECTIONS */
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        /* DASHBOARD */
+
+        .welcome {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        .welcome h2 {
+            margin-bottom: 10px;
+        }
+
+        .welcome p {
+            color: #777;
+            line-height: 1.6;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        .card h3 {
+            color: #777;
+            margin-bottom: 12px;
+        }
+
+        .card p {
+            font-size: 30px;
+            font-weight: bold;
+            color: #2d6cdf;
+        }
+
+        /* PANEL */
+
+        .panel {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            margin-bottom: 25px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .panel-title h2 {
+            margin-bottom: 5px;
+        }
+
+        .panel-title p {
+            color: #777;
+            font-size: 14px;
+        }
+
+        /* BUTTONS */
+
+        .btn {
+            border: none;
+            color: white;
+            padding: 11px 18px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+
+        .btn-primary {
+            background: #2d6cdf;
+        }
+
+        .btn-success {
+            background: #198754;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+        }
+
+        /* FORM */
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group.full {
+            grid-column: 1 / 3;
+        }
+
+        .form-group label {
+            margin-bottom: 7px;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: #2d6cdf;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 90px;
+        }
+
+        .required {
+            color: red;
+        }
+
+        .form-actions {
+            margin-top: 25px;
+            display: flex;
+            gap: 10px;
+        }
+
+        /* TABLE */
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 900px;
+        }
+
+        th,
+        td {
+            padding: 14px;
+            border-bottom: 1px solid #eee;
+            text-align: left;
+        }
+
+        th {
+            background: #f7f8fa;
+            font-size: 14px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #fafafa;
+        }
+
+        /* SEARCH */
+
+        .search {
+            padding: 11px;
+            border: 1px solid #ddd;
+            border-radius: 7px;
+            width: 250px;
+            outline: none;
+        }
+
+        .search:focus {
+            border-color: #2d6cdf;
+        }
+
+        /* MESSAGE */
+
+        .message {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 7px;
+            display: none;
+        }
+
+        .success-message {
+            background: #d1e7dd;
+            color: #0f5132;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #842029;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 30px;
+            color: #777;
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width: 900px) {
+
+            .sidebar {
+                width: 190px;
+            }
+
+            .main {
+                margin-left: 190px;
+            }
+
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media(max-width: 600px) {
+
+            .sidebar {
+                position: relative;
+                width: 100%;
+                height: auto;
+            }
+
+            .main {
+                margin-left: 0;
+            }
+
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full {
+                grid-column: 1;
+            }
+
+            .topbar {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+
+            .panel-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .search {
+                width: 100%;
+            }
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+
+<div class="sidebar">
+
+    <div class="logo">
+        🏢 CompanyMS
+    </div>
+
+    <button class="nav-btn active"
+        onclick="showSection('dashboard', this)">
+        🏠 Dashboard
+    </button>
+
+    <button class="nav-btn"
+        onclick="showSection('companies', this)">
+        🏢 Companies
+    </button>
+
+    <button class="nav-btn"
+        onclick="showSection('employees', this)">
+        👨‍💼 Employees
+    </button>
+
+    <button class="nav-btn"
+        onclick="showSection('customers', this)">
+        👥 Customers
+    </button>
+
+    <button class="nav-btn"
+        onclick="showSection('departments', this)">
+        🏛 Departments
+    </button>
+
+    <button class="nav-btn"
+        onclick="showSection('products', this)">
+        📦 Products
+    </button>
+
+    <button class="nav-btn"
+        onclick="showSection('projects', this)">
+        📋 Projects
+    </button>
+
+    <button class="nav-btn"
+        onclick="showSection('orders', this)">
+        🛒 Orders
+    </button>
+
+    <button class="nav-btn"
+        onclick="showSection('payments', this)">
+        💳 Payments
+    </button>
+
+</div>
+
+
+<!-- MAIN -->
+
+<div class="main">
+
+    <!-- TOP BAR -->
+
+    <div class="topbar">
+
+        <h1 id="pageTitle">
+            Dashboard
+        </h1>
+
+        <div id="currentDate" class="date"></div>
+
+    </div>
+
+
+    <!-- DASHBOARD -->
+
+    <section id="dashboard" class="section active">
+
+        <div class="welcome">
+
+            <h2>
+                Welcome to Company Management System
+            </h2>
+
+            <p>
+                Manage companies, employees, customers,
+                departments, products, projects, orders
+                and payments from one place.
+            </p>
+
+        </div>
+
+
+        <div class="cards">
+
+            <div class="card">
+                <h3>Total Companies</h3>
+                <p id="companyCount">0</p>
+            </div>
+
+            <div class="card">
+                <h3>Employees</h3>
+                <p id="employeeCount">0</p>
+            </div>
+
+            <div class="card">
+                <h3>Departments</h3>
+                <p id="departmentCount">0</p>
+            </div>
+
+            <div class="card">
+                <h3>Active Team</h3>
+                <p id="activeEmployeeCount">0</p>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- COMPANIES -->
+
+    <section id="companies" class="section">
+
+        <!-- ADD COMPANY -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div class="panel-title">
+
+                    <h2>
+                        🏢 Add Company
+                    </h2>
+
+                    <p>
+                        Enter company information and save it to MySQL.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form id="companyForm">
+
+                <div class="form-grid">
+
+                    <!-- COMPANY NAME -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Company Name
+                            <span class="required">*</span>
+                        </label>
+
+                        <input
+                            type="text"
+                            id="companyName"
+                            name="company_name"
+                            placeholder="Enter company name"
+                            required
+                        >
+
+                    </div>
+
+
+                    <!-- EMAIL -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="companyEmail"
+                            name="email"
+                            placeholder="company@example.com"
+                        >
+
+                    </div>
+
+
+                    <!-- PHONE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Phone
+                        </label>
+
+                        <input
+                            type="text"
+                            id="companyPhone"
+                            name="phone"
+                            placeholder="Enter phone number"
+                        >
+
+                    </div>
+
+
+                    <!-- CITY -->
+
+                    <div class="form-group">
+
+                        <label>
+                            City
+                        </label>
+
+                        <input
+                            type="text"
+                            id="companyCity"
+                            name="city"
+                            placeholder="Enter city"
+                        >
+
+                    </div>
+
+
+                    <!-- STATE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            State
+                        </label>
+
+                        <input
+                            type="text"
+                            id="companyState"
+                            name="state"
+                            placeholder="Enter state"
+                        >
+
+                    </div>
+
+
+                    <!-- COUNTRY -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Country
+                        </label>
+
+                        <input
+                            type="text"
+                            id="companyCountry"
+                            name="country"
+                            placeholder="Enter country"
+                            value="India"
+                        >
+
+                    </div>
+
+
+                    <!-- WEBSITE -->
+
+                    <div class="form-group">
+
+                        <label>
+                            Website
+                        </label>
+
+                        <input
+                            type="text"
+                            id="companyWebsite"
+                            name="website"
+                            placeholder="www.example.com"
+                        >
+
+                    </div>
+
+
+                    <!-- ADDRESS -->
+
+                    <div class="form-group full">
+
+                        <label>
+                            Address
+                        </label>
+
+                        <textarea
+                            id="companyAddress"
+                            name="address"
+                            placeholder="Enter complete company address"
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+
+                <!-- BUTTONS -->
+
+                <div class="form-actions">
+
+                    <button
+                        type="submit"
+                        class="btn btn-success">
+                        💾 Save Company
+                    </button>
+
+                    <button
+                        type="reset"
+                        class="btn btn-danger">
+                        ✕ Clear
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="formMessage"
+                    class="message">
+                </div>
+
+            </form>
+
+        </div>
+
+
+        <!-- COMPANY RECORDS -->
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div class="panel-title">
+
+                    <h2>
+                        📋 Company Records
+                    </h2>
+
+                    <p>
+                        Data loaded directly from MySQL.
+                    </p>
+
+                </div>
+
+
+                <input
+                    type="text"
+                    id="companySearch"
+                    class="search"
+                    placeholder="🔍 Search company..."
+                    onkeyup="searchCompanies()"
+                >
+
+            </div>
+
+
+            <div class="table-container">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>ID</th>
+
+                            <th>Company Name</th>
+
+                            <th>Email</th>
+
+                            <th>Phone</th>
+
+                            <th>Address</th>
+
+                            <th>City</th>
+
+                            <th>State</th>
+
+                            <th>Country</th>
+
+                            <th>Website</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody id="companyTableBody">
+
+                        <tr>
+
+                            <td
+                                colspan="9"
+                                class="empty-message">
+                                Loading companies...
+                            </td>
+
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- EMPLOYEES -->
+
+    <section id="employees" class="section">
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div class="panel-title">
+                    <h2>👨‍💼 Add Employee</h2>
+                    <p>Store employee details and team information in MySQL.</p>
+                </div>
+
+            </div>
+
+            <form id="employeeForm">
+
+                <div class="form-grid">
+
+                    <div class="form-group">
+                        <label>First Name <span class="required">*</span></label>
+                        <input type="text" id="employeeFirstName" name="first_name" placeholder="Enter first name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Last Name <span class="required">*</span></label>
+                        <input type="text" id="employeeLastName" name="last_name" placeholder="Enter last name" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="employeeEmail" name="email" placeholder="employee@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="text" id="employeePhone" name="phone" placeholder="Enter phone number">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Department <span class="required">*</span></label>
+                        <select id="employeeDepartment" name="department_id" required>
+                            <option value="">Select department</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Job Title</label>
+                        <input type="text" id="employeeJobTitle" name="job_title" placeholder="e.g. Software Developer">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Salary</label>
+                        <input type="number" id="employeeSalary" name="salary" placeholder="45000">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Joining Date</label>
+                        <input type="date" id="employeeJoiningDate" name="joining_date">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="employeeStatus" name="status">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                            <option value="On Leave">On Leave</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success">💾 Save Employee</button>
+                    <button type="reset" class="btn btn-danger">✕ Clear</button>
+                </div>
+
+                <div id="employeeMessage" class="message"></div>
+            </form>
+
+        </div>
+
+        <div class="panel">
+
+            <div class="panel-header">
+
+                <div class="panel-title">
+                    <h2>📋 Employee Records</h2>
+                    <p>Current team data from the database.</p>
+                </div>
+
+                <input type="text" id="employeeSearch" class="search" placeholder="🔍 Search employee..." onkeyup="searchEmployees()">
+
+            </div>
+
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Department</th>
+                            <th>Company</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Job Title</th>
+                            <th>Salary</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="employeeTableBody">
+                        <tr>
+                            <td colspan="9" class="empty-message">Loading employees...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- CUSTOMERS -->
+
+    <section id="customers" class="section">
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <h2>👥 Add Customer</h2>
+                    <p>Manage customer records from the system.</p>
+                </div>
+            </div>
+
+            <form id="customerForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Customer Name <span class="required">*</span></label>
+                        <input type="text" id="customerName" name="customer_name" placeholder="Enter customer name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="customerEmail" name="email" placeholder="customer@example.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="text" id="customerPhone" name="phone" placeholder="Enter phone number">
+                    </div>
+                    <div class="form-group">
+                        <label>City</label>
+                        <input type="text" id="customerCity" name="city" placeholder="Enter city">
+                    </div>
+                    <div class="form-group">
+                        <label>Country</label>
+                        <input type="text" id="customerCountry" name="country" placeholder="Enter country" value="India">
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="customerStatus" name="status">
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success">💾 Save Customer</button>
+                    <button type="reset" class="btn btn-danger">✕ Clear</button>
+                </div>
+
+                <div id="customerMessage" class="message"></div>
+            </form>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <h2>📋 Customer Records</h2>
+                    <p>Current customer database records.</p>
+                </div>
+                <input type="text" id="customerSearch" class="search" placeholder="🔍 Search customer..." onkeyup="searchCustomers()">
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>City</th>
+                            <th>Country</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customerTableBody">
+                        <tr><td colspan="7" class="empty-message">Loading customers...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- DEPARTMENTS -->
+
+    <section id="departments" class="section">
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <h2>🏛 Departments</h2>
+                    <p>Data from company departments.</p>
+                </div>
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Department</th>
+                            <th>Location</th>
+                            <th>Company</th>
+                        </tr>
+                    </thead>
+                    <tbody id="departmentTableBody">
+                        <tr><td colspan="4" class="empty-message">Loading departments...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- PRODUCTS -->
+
+    <section id="products" class="section">
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <h2>📦 Add Product</h2>
+                    <p>Add product records to the system.</p>
+                </div>
+            </div>
+
+            <form id="productForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Product Name <span class="required">*</span></label>
+                        <input type="text" id="productName" name="product_name" placeholder="Enter product name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <input type="text" id="productCategory" name="category" placeholder="e.g. Software">
+                    </div>
+                    <div class="form-group">
+                        <label>Unit Price</label>
+                        <input type="number" id="productPrice" name="unit_price" placeholder="5000">
+                    </div>
+                    <div class="form-group">
+                        <label>Stock Quantity</label>
+                        <input type="number" id="productStock" name="stock_quantity" placeholder="100">
+                    </div>
+                    <div class="form-group">
+                        <label>Company <span class="required">*</span></label>
+                        <select id="productCompany" name="company_id" required>
+                            <option value="">Select company</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success">💾 Save Product</button>
+                    <button type="reset" class="btn btn-danger">✕ Clear</button>
+                </div>
+
+                <div id="productMessage" class="message"></div>
+            </form>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <h2>📋 Product Records</h2>
+                    <p>Current product inventory and pricing.</p>
+                </div>
+                <input type="text" id="productSearch" class="search" placeholder="🔍 Search product..." onkeyup="searchProducts()">
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Company</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTableBody">
+                        <tr><td colspan="6" class="empty-message">Loading products...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- PROJECTS -->
+
+    <section id="projects" class="section">
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <h2>📋 Add Project</h2>
+                    <p>Track current company projects and budgets.</p>
+                </div>
+            </div>
+
+            <form id="projectForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Project Name <span class="required">*</span></label>
+                        <input type="text" id="projectName" name="project_name" placeholder="Enter project name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Company <span class="required">*</span></label>
+                        <select id="projectCompany" name="company_id" required>
+                            <option value="">Select company</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Project Manager</label>
+                        <input type="text" id="projectManager" name="project_manager" placeholder="Manager name">
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="projectStatus" name="status">
+                            <option value="In Progress">In Progress</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </div>
+                    <div class="form-group full">
+                        <label>Budget</label>
+                        <input type="number" id="projectBudget" name="budget" placeholder="250000">
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success">💾 Save Project</button>
+                    <button type="reset" class="btn btn-danger">✕ Clear</button>
+                </div>
+
+                <div id="projectMessage" class="message"></div>
+            </form>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <h2>📋 Project Records</h2>
+                    <p>Live project progress and budget data.</p>
+                </div>
+                <input type="text" id="projectSearch" class="search" placeholder="🔍 Search project..." onkeyup="searchProjects()">
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Company</th>
+                            <th>Manager</th>
+                            <th>Status</th>
+                            <th>Budget</th>
+                        </tr>
+                    </thead>
+                    <tbody id="projectTableBody">
+                        <tr><td colspan="6" class="empty-message">Loading projects...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- ORDERS -->
+
+    <section id="orders" class="section">
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <h2>🛒 Add Order</h2>
+                    <p>Track customer orders and product sales.</p>
+                </div>
+            </div>
+
+            <form id="orderForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Customer <span class="required">*</span></label>
+                        <select id="orderCustomer" name="customer_id" required>
+                            <option value="">Select customer</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Product <span class="required">*</span></label>
+                        <select id="orderProduct" name="product_id" required>
+                            <option value="">Select product</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantity</label>
+                        <input type="number" id="orderQuantity" name="quantity" placeholder="1">
+                    </div>
+                    <div class="form-group">
+                        <label>Total Amount</label>
+                        <input type="number" id="orderAmount" name="total_amount" placeholder="5000">
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="orderStatus" name="status">
+                            <option value="Pending">Pending</option>
+                            <option value="Completed">Completed</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success">💾 Save Order</button>
+                    <button type="reset" class="btn btn-danger">✕ Clear</button>
+                </div>
+
+                <div id="orderMessage" class="message"></div>
+            </form>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <h2>📋 Order Records</h2>
+                    <p>Sales and order status overview.</p>
+                </div>
+                <input type="text" id="orderSearch" class="search" placeholder="🔍 Search order..." onkeyup="searchOrders()">
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer</th>
+                            <th>Product</th>
+                            <th>Qty</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="orderTableBody">
+                        <tr><td colspan="6" class="empty-message">Loading orders...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+
+
+    <!-- PAYMENTS -->
+
+    <section id="payments" class="section">
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <h2>💳 Add Payment</h2>
+                    <p>Record customer payment status.</p>
+                </div>
+            </div>
+
+            <form id="paymentForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Order <span class="required">*</span></label>
+                        <select id="paymentOrder" name="order_id" required>
+                            <option value="">Select order</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Payment Method</label>
+                        <select id="paymentMethod" name="payment_method">
+                            <option value="Cash">Cash</option>
+                            <option value="Card">Card</option>
+                            <option value="UPI">UPI</option>
+                            <option value="Bank Transfer">Bank Transfer</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Amount <span class="required">*</span></label>
+                        <input type="number" id="paymentAmount" name="amount" placeholder="5000" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Status</label>
+                        <select id="paymentStatus" name="status">
+                            <option value="Paid">Paid</option>
+                            <option value="Pending">Pending</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-success">💾 Save Payment</button>
+                    <button type="reset" class="btn btn-danger">✕ Clear</button>
+                </div>
+
+                <div id="paymentMessage" class="message"></div>
+            </form>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <h2>📋 Payment Records</h2>
+                    <p>Payment collection and status overview.</p>
+                </div>
+                <input type="text" id="paymentSearch" class="search" placeholder="🔍 Search payment..." onkeyup="searchPayments()">
+            </div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Order</th>
+                            <th>Customer</th>
+                            <th>Method</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="paymentTableBody">
+                        <tr><td colspan="6" class="empty-message">Loading payments...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </section>
+
+</div>
+
+
+<script>
+
+    // ==========================================
+    // DATE
+    // ==========================================
+
+    document.getElementById("currentDate").innerText =
+        new Date().toLocaleDateString("en-IN", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric"
+        });
+
+
+    // ==========================================
+    // NAVIGATION
+    // ==========================================
+
+    function showSection(sectionId, button) {
+
+        document.querySelectorAll(".section").forEach(section => {
+            section.classList.remove("active");
+        });
+
+        const selectedSection =
+            document.getElementById(sectionId);
+
+        if (selectedSection) {
+            selectedSection.classList.add("active");
+        }
+
+        document.querySelectorAll(".nav-btn").forEach(btn => {
+            btn.classList.remove("active");
+        });
+
+        if (button) {
+            button.classList.add("active");
+        }
+
+        const titles = {
+            dashboard: "Dashboard",
+            companies: "Companies",
+            employees: "Employees",
+            customers: "Customers",
+            departments: "Departments",
+            products: "Products",
+            projects: "Projects",
+            orders: "Orders",
+            payments: "Payments"
+        };
+
+        document.getElementById("pageTitle").innerText =
+            titles[sectionId] || "Company Management";
+
+        if (sectionId === "companies") {
+            loadCompanies();
+        }
+
+        if (sectionId === "employees") {
+            loadEmployees();
+            loadDepartmentsForSelect();
+        }
+
+        if (sectionId === "customers") {
+            loadCustomers();
+        }
+
+        if (sectionId === "products") {
+            loadProducts();
+            loadCompanyOptionsForSelect("productCompany");
+        }
+
+        if (sectionId === "projects") {
+            loadProjects();
+            loadCompanyOptionsForSelect("projectCompany");
+        }
+
+        if (sectionId === "orders") {
+            loadOrders();
+            loadCustomerOptionsForSelect("orderCustomer");
+            loadProductOptionsForSelect("orderProduct");
+        }
+
+        if (sectionId === "payments") {
+            loadPayments();
+            loadOrderOptionsForSelect("paymentOrder");
+        }
+
+        loadDashboardStats();
+    }
+
+
+    // ==========================================
+    // SHOW FORM MESSAGE
+    // ==========================================
+
+    function showMessage(message, type) {
+
+        const messageBox =
+            document.getElementById("formMessage");
+
+        messageBox.innerText = message;
+
+        messageBox.className =
+            "message " +
+            (type === "success"
+                ? "success-message"
+                : "error-message");
+
+        messageBox.style.display = "block";
+
+    }
+
+
+    // ==========================================
+    // SAVE COMPANY
+    // ==========================================
+
+    document
+        .getElementById("companyForm")
+        .addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+            const companyData = {
+
+                company_name:
+                    document.getElementById("companyName").value.trim(),
+
+                email:
+                    document.getElementById("companyEmail").value.trim(),
+
+                phone:
+                    document.getElementById("companyPhone").value.trim(),
+
+                address:
+                    document.getElementById("companyAddress").value.trim(),
+
+                city:
+                    document.getElementById("companyCity").value.trim(),
+
+                state:
+                    document.getElementById("companyState").value.trim(),
+
+                country:
+                    document.getElementById("companyCountry").value.trim(),
+
+                website:
+                    document.getElementById("companyWebsite").value.trim()
+
+            };
+
+
+            console.log("Sending company data:");
+            console.log(companyData);
+
+
+            try {
+
+                const response = await fetch(
+                    "/api/companies",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+
+                        body: JSON.stringify(companyData)
+                    }
+                );
+
+
+                const result = await response.json();
+
+
+                console.log("Server response:");
+                console.log(result);
+
+
+                if (response.ok && result.success) {
+
+                    showMessage(
+                        "✅ Company added successfully!",
+                        "success"
+                    );
+
+                    document
+                        .getElementById("companyForm")
+                        .reset();
+
+                    document.getElementById("companyCountry").value =
+                        "India";
+
+                    loadCompanies();
+
+                } else {
+
+                    showMessage(
+                        "❌ " +
+                        (result.message ||
+                        "Failed to add company"),
+                        "error"
+                    );
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "SERVER CONNECTION ERROR:",
+                    error
+                );
+
+                showMessage(
+                    "❌ Cannot connect to server. Make sure the app is running on port 3000.",
+                    "error"
+                );
+
+            }
+
+        });
+
+
+    // ==========================================
+    // DASHBOARD STATISTICS
+    // ==========================================
+
+    async function loadDashboardStats() {
+
+        try {
+
+            const response = await fetch("/api/dashboard");
+
+            if (!response.ok) {
+                throw new Error("Unable to fetch dashboard data");
+            }
+
+            const stats = await response.json();
+
+            document.getElementById("companyCount").innerText = stats.companyCount || 0;
+            document.getElementById("employeeCount").innerText = stats.employeeCount || 0;
+            document.getElementById("departmentCount").innerText = stats.departmentCount || 0;
+            document.getElementById("activeEmployeeCount").innerText = stats.employeeCount || 0;
+
+        } catch (error) {
+            console.error("Dashboard load failed:", error);
+        }
+
+    }
+
+
+    // ==========================================
+    // LOAD DEPARTMENTS FOR SELECT
+    // ==========================================
+
+    async function loadDepartmentsForSelect() {
+
+        const select = document.getElementById("employeeDepartment");
+
+        if (!select) return;
+
+        try {
+
+            const response = await fetch("/api/departments");
+
+            if (!response.ok) {
+                throw new Error("Unable to fetch departments");
+            }
+
+            const departments = await response.json();
+            select.innerHTML = '<option value="">Select department</option>';
+
+            departments.forEach(dept => {
+                const option = document.createElement("option");
+                option.value = dept.department_id;
+                option.textContent = `${dept.department_name} (${dept.company_name})`;
+                select.appendChild(option);
+            });
+
+        } catch (error) {
+            console.error("Department load failed:", error);
+        }
+
+    }
+
+
+    // ==========================================
+    // LOAD COMPANIES
+    // ==========================================
+
+    async function loadCompanies() {
+
+        try {
+
+            const response =
+                await fetch("/api/companies");
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    "API returned status " +
+                    response.status
+                );
+
+            }
+
+
+            const companies =
+                await response.json();
+
+
+            console.log("Companies received:");
+            console.log(companies);
+
+
+            const tableBody =
+                document.getElementById(
+                    "companyTableBody"
+                );
+
+
+            tableBody.innerHTML = "";
+
+
+            document.getElementById(
+                "companyCount"
+            ).innerText =
+                companies.length;
+
+
+            if (companies.length === 0) {
+
+                tableBody.innerHTML = `
+
+                    <tr>
+
+                        <td
+                            colspan="9"
+                            class="empty-message">
+
+                            No company records found.
+
+                        </td>
+
+                    </tr>
+
+                `;
+
+                return;
+            }
+
+
+            companies.forEach(company => {
+
+                const row =
+                    document.createElement("tr");
+
+
+                row.innerHTML = `
+
+                    <td>
+                        ${company.company_id}
+                    </td>
+
+                    <td>
+                        ${company.company_name || "-"}
+                    </td>
+
+                    <td>
+                        ${company.email || "-"}
+                    </td>
+
+                    <td>
+                        ${company.phone || "-"}
+                    </td>
+
+                    <td>
+                        ${company.address || "-"}
+                    </td>
+
+                    <td>
+                        ${company.city || "-"}
+                    </td>
+
+                    <td>
+                        ${company.state || "-"}
+                    </td>
+
+                    <td>
+                        ${company.country || "-"}
+                    </td>
+
+                    <td>
+                        ${company.website || "-"}
+                    </td>
+
+                `;
+
+
+                tableBody.appendChild(row);
+
+            });
+
+
+        } catch (error) {
+
+            console.error(
+                "Unable to load companies:",
+                error
+            );
+
+
+            const tableBody =
+                document.getElementById(
+                    "companyTableBody"
+                );
+
+
+            tableBody.innerHTML = `
+
+                <tr>
+
+                    <td
+                        colspan="9"
+                        class="empty-message">
+
+                        ❌ Cannot connect to server.
+
+                        <br><br>
+
+                        Please make sure the app is running
+                        on port 3000.
+
+                    </td>
+
+                </tr>
+
+            `;
+
+        }
+
+    }
+
+
+    // ==========================================
+    // EMPLOYEE FORM
+    // ==========================================
+
+    document.getElementById("employeeForm")?.addEventListener("submit", async function(event) {
+
+        event.preventDefault();
+
+        const employeeData = {
+            first_name: document.getElementById("employeeFirstName").value.trim(),
+            last_name: document.getElementById("employeeLastName").value.trim(),
+            email: document.getElementById("employeeEmail").value.trim(),
+            phone: document.getElementById("employeePhone").value.trim(),
+            department_id: document.getElementById("employeeDepartment").value,
+            job_title: document.getElementById("employeeJobTitle").value.trim(),
+            salary: document.getElementById("employeeSalary").value,
+            joining_date: document.getElementById("employeeJoiningDate").value,
+            status: document.getElementById("employeeStatus").value
+        };
+
+        if (!employeeData.first_name || !employeeData.last_name || !employeeData.department_id) {
+            showEmployeeMessage("Please enter first name, last name and department.", "error");
+            return;
+        }
+
+        try {
+
+            const response = await fetch("/api/employees", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(employeeData)
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+
+                showEmployeeMessage("✅ Employee added successfully!", "success");
+                document.getElementById("employeeForm").reset();
+                loadEmployees();
+                loadDashboardStats();
+
+            } else {
+
+                showEmployeeMessage("❌ " + (result.message || "Failed to add employee"), "error");
+
+            }
+
+        } catch (error) {
+            console.error("Employee connection error:", error);
+            showEmployeeMessage("❌ Cannot connect to server. Make sure the app is running on port 3000.", "error");
+        }
+
+    });
+
+
+    function showEmployeeMessage(message, type) {
+        const box = document.getElementById("employeeMessage");
+
+        if (!box) return;
+
+        box.textContent = message;
+        box.className = "message " + (type === "success" ? "success-message" : "error-message");
+        box.style.display = "block";
+    }
+
+
+    // ==========================================
+    // LOAD EMPLOYEES
+    // ==========================================
+
+    async function loadEmployees() {
+
+        try {
+
+            const response = await fetch("/api/employees");
+
+            if (!response.ok) {
+                throw new Error("API returned status " + response.status);
+            }
+
+            const employees = await response.json();
+            const tableBody = document.getElementById("employeeTableBody");
+
+            if (!tableBody) return;
+
+            tableBody.innerHTML = "";
+
+            if (employees.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="9" class="empty-message">No employees found.</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            employees.forEach(employee => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${employee.employee_id}</td>
+                    <td>${employee.first_name} ${employee.last_name}</td>
+                    <td>${employee.department_name || "-"}</td>
+                    <td>${employee.company_name || "-"}</td>
+                    <td>${employee.email || "-"}</td>
+                    <td>${employee.phone || "-"}</td>
+                    <td>${employee.job_title || "-"}</td>
+                    <td>${employee.salary ? "₹" + Number(employee.salary).toLocaleString("en-IN") : "-"}</td>
+                    <td>${employee.status || "Active"}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+
+        } catch (error) {
+            console.error("Unable to load employees:", error);
+            const tableBody = document.getElementById("employeeTableBody");
+            if (tableBody) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="9" class="empty-message">❌ Cannot connect to server. Please make sure the app is running on port 3000.</td>
+                    </tr>
+                `;
+            }
+        }
+
+    }
+
+
+    // ==========================================
+    // CUSTOMER SECTION
+    // ==========================================
+
+    document.getElementById("customerForm")?.addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const customerData = {
+            customer_name: document.getElementById("customerName").value.trim(),
+            email: document.getElementById("customerEmail").value.trim(),
+            phone: document.getElementById("customerPhone").value.trim(),
+            city: document.getElementById("customerCity").value.trim(),
+            country: document.getElementById("customerCountry").value.trim(),
+            status: document.getElementById("customerStatus").value
+        };
+
+        if (!customerData.customer_name) {
+            showMessageBox("customerMessage", "Please enter customer name.", "error");
+            return;
+        }
+
+        try {
+            const response = await fetch("/api/customers", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(customerData)
+            });
+
+            const result = await response.json();
+
+            if (response.ok && result.success) {
+                showMessageBox("customerMessage", "✅ Customer added successfully!", "success");
+                document.getElementById("customerForm").reset();
+                loadCustomers();
+            } else {
+                showMessageBox("customerMessage", "❌ " + (result.message || "Failed to add customer"), "error");
+            }
+        } catch (error) {
+            showMessageBox("customerMessage", "❌ Cannot connect to server.", "error");
+        }
+    });
+
+    async function loadCustomers() {
+        try {
+            const response = await fetch("/api/customers");
+            if (!response.ok) throw new Error("Unable to fetch customers");
+            const customers = await response.json();
+            const tbody = document.getElementById("customerTableBody");
+            if (!tbody) return;
+            tbody.innerHTML = "";
+
+            if (customers.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="empty-message">No customers found.</td></tr>';
+                return;
+            }
+
+            customers.forEach(customer => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${customer.customer_id}</td>
+                    <td>${customer.customer_name || "-"}</td>
+                    <td>${customer.email || "-"}</td>
+                    <td>${customer.phone || "-"}</td>
+                    <td>${customer.city || "-"}</td>
+                    <td>${customer.country || "-"}</td>
+                    <td>${customer.status || "Active"}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        } catch (error) {
+            console.error("Unable to load customers:", error);
+        }
+    }
+
+    function searchCustomers() {
+        const search = document.getElementById("customerSearch").value.toLowerCase();
+        const rows = document.querySelectorAll("#customerTableBody tr");
+        rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.includes(search) ? "" : "none";
+        });
+    }
+
+
+    // ==========================================
+    // PRODUCT SECTION
+    // ==========================================
+
+    document.getElementById("productForm")?.addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const productData = {
+            product_name: document.getElementById("productName").value.trim(),
+            category: document.getElementById("productCategory").value.trim(),
+            unit_price: document.getElementById("productPrice").value,
+            stock_quantity: document.getElementById("productStock").value,
+            company_id: document.getElementById("productCompany").value
+        };
+
+        if (!productData.product_name || !productData.company_id) {
+            showMessageBox("productMessage", "Please enter product name and select a company.", "error");
+            return;
+        }
+
+        try {
+            const response = await fetch("/api/products", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(productData)
+            });
+
+            const result = await response.json();
+            if (response.ok && result.success) {
+                showMessageBox("productMessage", "✅ Product added successfully!", "success");
+                document.getElementById("productForm").reset();
+                loadProducts();
+            } else {
+                showMessageBox("productMessage", "❌ " + (result.message || "Failed to add product"), "error");
+            }
+        } catch (error) {
+            showMessageBox("productMessage", "❌ Cannot connect to server.", "error");
+        }
+    });
+
+    async function loadProducts() {
+        try {
+            const response = await fetch("/api/products");
+            if (!response.ok) throw new Error("Unable to fetch products");
+            const products = await response.json();
+            const tbody = document.getElementById("productTableBody");
+            if (!tbody) return;
+            tbody.innerHTML = "";
+
+            if (products.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="empty-message">No products found.</td></tr>';
+                return;
+            }
+
+            products.forEach(product => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${product.product_id}</td>
+                    <td>${product.product_name || "-"}</td>
+                    <td>${product.category || "-"}</td>
+                    <td>₹${Number(product.unit_price || 0).toLocaleString("en-IN")}</td>
+                    <td>${product.stock_quantity || 0}</td>
+                    <td>${product.company_name || "-"}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        } catch (error) {
+            console.error("Unable to load products:", error);
+        }
+    }
+
+    function searchProducts() {
+        const search = document.getElementById("productSearch").value.toLowerCase();
+        const rows = document.querySelectorAll("#productTableBody tr");
+        rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.includes(search) ? "" : "none";
+        });
+    }
+
+
+    // ==========================================
+    // PROJECT SECTION
+    // ==========================================
+
+    document.getElementById("projectForm")?.addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const projectData = {
+            project_name: document.getElementById("projectName").value.trim(),
+            company_id: document.getElementById("projectCompany").value,
+            project_manager: document.getElementById("projectManager").value.trim(),
+            status: document.getElementById("projectStatus").value,
+            budget: document.getElementById("projectBudget").value
+        };
+
+        if (!projectData.project_name || !projectData.company_id) {
+            showMessageBox("projectMessage", "Please enter project name and select a company.", "error");
+            return;
+        }
+
+        try {
+            const response = await fetch("/api/projects", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(projectData)
+            });
+
+            const result = await response.json();
+            if (response.ok && result.success) {
+                showMessageBox("projectMessage", "✅ Project added successfully!", "success");
+                document.getElementById("projectForm").reset();
+                loadProjects();
+            } else {
+                showMessageBox("projectMessage", "❌ " + (result.message || "Failed to add project"), "error");
+            }
+        } catch (error) {
+            showMessageBox("projectMessage", "❌ Cannot connect to server.", "error");
+        }
+    });
+
+    async function loadProjects() {
+        try {
+            const response = await fetch("/api/projects");
+            if (!response.ok) throw new Error("Unable to fetch projects");
+            const projects = await response.json();
+            const tbody = document.getElementById("projectTableBody");
+            if (!tbody) return;
+            tbody.innerHTML = "";
+
+            if (projects.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="empty-message">No projects found.</td></tr>';
+                return;
+            }
+
+            projects.forEach(project => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${project.project_id}</td>
+                    <td>${project.project_name || "-"}</td>
+                    <td>${project.company_name || "-"}</td>
+                    <td>${project.project_manager || "-"}</td>
+                    <td>${project.status || "In Progress"}</td>
+                    <td>₹${Number(project.budget || 0).toLocaleString("en-IN")}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        } catch (error) {
+            console.error("Unable to load projects:", error);
+        }
+    }
+
+    function searchProjects() {
+        const search = document.getElementById("projectSearch").value.toLowerCase();
+        const rows = document.querySelectorAll("#projectTableBody tr");
+        rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.includes(search) ? "" : "none";
+        });
+    }
+
+
+    // ==========================================
+    // ORDER SECTION
+    // ==========================================
+
+    document.getElementById("orderForm")?.addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const orderData = {
+            customer_id: document.getElementById("orderCustomer").value,
+            product_id: document.getElementById("orderProduct").value,
+            quantity: document.getElementById("orderQuantity").value,
+            total_amount: document.getElementById("orderAmount").value,
+            status: document.getElementById("orderStatus").value
+        };
+
+        if (!orderData.customer_id || !orderData.product_id) {
+            showMessageBox("orderMessage", "Please select customer and product.", "error");
+            return;
+        }
+
+        try {
+            const response = await fetch("/api/orders", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(orderData)
+            });
+
+            const result = await response.json();
+            if (response.ok && result.success) {
+                showMessageBox("orderMessage", "✅ Order added successfully!", "success");
+                document.getElementById("orderForm").reset();
+                loadOrders();
+            } else {
+                showMessageBox("orderMessage", "❌ " + (result.message || "Failed to add order"), "error");
+            }
+        } catch (error) {
+            showMessageBox("orderMessage", "❌ Cannot connect to server.", "error");
+        }
+    });
+
+    async function loadOrders() {
+        try {
+            const response = await fetch("/api/orders");
+            if (!response.ok) throw new Error("Unable to fetch orders");
+            const orders = await response.json();
+            const tbody = document.getElementById("orderTableBody");
+            if (!tbody) return;
+            tbody.innerHTML = "";
+
+            if (orders.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="empty-message">No orders found.</td></tr>';
+                return;
+            }
+
+            orders.forEach(order => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${order.order_id}</td>
+                    <td>${order.customer_name || "-"}</td>
+                    <td>${order.product_name || "-"}</td>
+                    <td>${order.quantity || 0}</td>
+                    <td>₹${Number(order.total_amount || 0).toLocaleString("en-IN")}</td>
+                    <td>${order.status || "Pending"}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        } catch (error) {
+            console.error("Unable to load orders:", error);
+        }
+    }
+
+    function searchOrders() {
+        const search = document.getElementById("orderSearch").value.toLowerCase();
+        const rows = document.querySelectorAll("#orderTableBody tr");
+        rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.includes(search) ? "" : "none";
+        });
+    }
+
+
+    // ==========================================
+    // PAYMENT SECTION
+    // ==========================================
+
+    document.getElementById("paymentForm")?.addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        const paymentData = {
+            order_id: document.getElementById("paymentOrder").value,
+            payment_method: document.getElementById("paymentMethod").value,
+            amount: document.getElementById("paymentAmount").value,
+            status: document.getElementById("paymentStatus").value
+        };
+
+        if (!paymentData.order_id || !paymentData.amount) {
+            showMessageBox("paymentMessage", "Please select an order and enter amount.", "error");
+            return;
+        }
+
+        try {
+            const response = await fetch("/api/payments", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(paymentData)
+            });
+
+            const result = await response.json();
+            if (response.ok && result.success) {
+                showMessageBox("paymentMessage", "✅ Payment added successfully!", "success");
+                document.getElementById("paymentForm").reset();
+                loadPayments();
+            } else {
+                showMessageBox("paymentMessage", "❌ " + (result.message || "Failed to add payment"), "error");
+            }
+        } catch (error) {
+            showMessageBox("paymentMessage", "❌ Cannot connect to server.", "error");
+        }
+    });
+
+    async function loadPayments() {
+        try {
+            const response = await fetch("/api/payments");
+            if (!response.ok) throw new Error("Unable to fetch payments");
+            const payments = await response.json();
+            const tbody = document.getElementById("paymentTableBody");
+            if (!tbody) return;
+            tbody.innerHTML = "";
+
+            if (payments.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" class="empty-message">No payments found.</td></tr>';
+                return;
+            }
+
+            payments.forEach(payment => {
+                const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${payment.payment_id}</td>
+                    <td>${payment.order_id}</td>
+                    <td>${payment.customer_name || "-"}</td>
+                    <td>${payment.payment_method || "Cash"}</td>
+                    <td>₹${Number(payment.amount || 0).toLocaleString("en-IN")}</td>
+                    <td>${payment.status || "Paid"}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        } catch (error) {
+            console.error("Unable to load payments:", error);
+        }
+    }
+
+    function searchPayments() {
+        const search = document.getElementById("paymentSearch").value.toLowerCase();
+        const rows = document.querySelectorAll("#paymentTableBody tr");
+        rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.includes(search) ? "" : "none";
+        });
+    }
+
+    function showMessageBox(elementId, message, type) {
+        const box = document.getElementById(elementId);
+        if (!box) return;
+        box.textContent = message;
+        box.className = "message " + (type === "success" ? "success-message" : "error-message");
+        box.style.display = "block";
+    }
+
+    async function loadCompanyOptionsForSelect(selectId) {
+        const select = document.getElementById(selectId);
+        if (!select) return;
+
+        try {
+            const response = await fetch("/api/companies");
+            if (!response.ok) throw new Error("Unable to fetch companies");
+            const companies = await response.json();
+            select.innerHTML = '<option value="">Select company</option>';
+            companies.forEach(company => {
+                const option = document.createElement("option");
+                option.value = company.company_id;
+                option.textContent = company.company_name;
+                select.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Unable to load company options:", error);
+        }
+    }
+
+    async function loadCustomerOptionsForSelect(selectId) {
+        const select = document.getElementById(selectId);
+        if (!select) return;
+
+        try {
+            const response = await fetch("/api/customers");
+            if (!response.ok) throw new Error("Unable to fetch customers");
+            const customers = await response.json();
+            select.innerHTML = '<option value="">Select customer</option>';
+            customers.forEach(customer => {
+                const option = document.createElement("option");
+                option.value = customer.customer_id;
+                option.textContent = customer.customer_name;
+                select.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Unable to load customer options:", error);
+        }
+    }
+
+    async function loadProductOptionsForSelect(selectId) {
+        const select = document.getElementById(selectId);
+        if (!select) return;
+
+        try {
+            const response = await fetch("/api/products");
+            if (!response.ok) throw new Error("Unable to fetch products");
+            const products = await response.json();
+            select.innerHTML = '<option value="">Select product</option>';
+            products.forEach(product => {
+                const option = document.createElement("option");
+                option.value = product.product_id;
+                option.textContent = product.product_name;
+                select.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Unable to load product options:", error);
+        }
+    }
+
+    async function loadOrderOptionsForSelect(selectId) {
+        const select = document.getElementById(selectId);
+        if (!select) return;
+
+        try {
+            const response = await fetch("/api/orders");
+            if (!response.ok) throw new Error("Unable to fetch orders");
+            const orders = await response.json();
+            select.innerHTML = '<option value="">Select order</option>';
+            orders.forEach(order => {
+                const option = document.createElement("option");
+                option.value = order.order_id;
+                option.textContent = `Order #${order.order_id}`;
+                select.appendChild(option);
+            });
+        } catch (error) {
+            console.error("Unable to load order options:", error);
+        }
+    }
+
+    // ==========================================
+    // SEARCH
+    // ==========================================
+
+    function searchCompanies() {
+
+        const search =
+            document
+                .getElementById("companySearch")
+                .value
+                .toLowerCase();
+
+
+        const rows =
+            document.querySelectorAll(
+                "#companyTableBody tr"
+            );
+
+
+        rows.forEach(row => {
+
+            const text =
+                row.innerText.toLowerCase();
+
+
+            row.style.display =
+                text.includes(search)
+                    ? ""
+                    : "none";
+
+        });
+
+    }
+
+
+    // ==========================================
+    // SEARCH EMPLOYEES
+    // ==========================================
+
+    function searchEmployees() {
+
+        const search = document.getElementById("employeeSearch").value.toLowerCase();
+        const rows = document.querySelectorAll("#employeeTableBody tr");
+
+        rows.forEach(row => {
+            const text = row.innerText.toLowerCase();
+            row.style.display = text.includes(search) ? "" : "none";
+        });
+
+    }
+
+
+    // ==========================================
+    // INITIAL LOAD
+    // ==========================================
+
+    loadDashboardStats();
+    loadCompanies();
+    loadEmployees();
+    loadDepartmentsForSelect();
+    loadCustomers();
+    loadProducts();
+    loadProjects();
+    loadOrders();
+    loadPayments();
+    loadCompanyOptionsForSelect("productCompany");
+    loadCompanyOptionsForSelect("projectCompany");
+    loadCustomerOptionsForSelect("orderCustomer");
+    loadProductOptionsForSelect("orderProduct");
+    loadOrderOptionsForSelect("paymentOrder");
+
+</script>
+
+</body>
+</html>
