@@ -1,3 +1,4 @@
+import "dotenv/config";
 import express from "express";
 import mysql from "mysql2/promise";
 
@@ -5,14 +6,14 @@ const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 const IS_PRODUCTION = process.env.NODE_ENV === "production";
 
-const DB_HOST = process.env.DB_HOST || (IS_PRODUCTION ? "" : "localhost");
-const DB_USER = process.env.DB_USER || (IS_PRODUCTION ? "" : "root");
-const DB_PASSWORD = process.env.DB_PASSWORD || (IS_PRODUCTION ? "" : "Pratik@2006");
+const DB_HOST = process.env.DB_HOST || "";
+const DB_USER = process.env.DB_USER || "";
+const DB_PASSWORD = process.env.DB_PASSWORD || "";
 const DB_NAME = process.env.DB_NAME || "company_management";
 const DB_PORT = Number(process.env.DB_PORT) || 3306;
 
-if (IS_PRODUCTION && (!DB_HOST || !DB_USER || !DB_PASSWORD)) {
-    throw new Error("Missing production database environment variables: DB_HOST, DB_USER, and DB_PASSWORD");
+if (!DB_HOST || !DB_USER || !DB_PASSWORD) {
+    throw new Error("Missing database environment variables: DB_HOST, DB_USER, and DB_PASSWORD");
 }
 
 
