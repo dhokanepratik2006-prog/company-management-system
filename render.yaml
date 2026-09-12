@@ -18,6 +18,6 @@ services:
       - key: DB_PASSWORD
         sync: false
       - key: DB_NAME
-        value: company_management
+        sync: false
       - key: DB_PORT
-        value: 3306
+        sync: false
