@@ -5,11 +5,13 @@ import mysql from "mysql2/promise";
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
 
-const DB_HOST = process.env.DB_HOST || process.env.MYSQLHOST || "";
-const DB_USER = process.env.DB_USER || process.env.MYSQLUSER || "";
-const DB_PASSWORD = process.env.DB_PASSWORD || process.env.MYSQLPASSWORD || process.env.MYSQL_ROOT_PASSWORD || "";
-const DB_NAME = process.env.DB_NAME || process.env.MYSQLDATABASE || "railway";
-const DB_PORT = Number(process.env.DB_PORT || process.env.MYSQLPORT) || 3306;
+const databaseUrl = process.env.MYSQL_URL || process.env.DATABASE_URL || "";
+const databaseConnection = databaseUrl ? new URL(databaseUrl) : null;
+const DB_HOST = process.env.DB_HOST || process.env.MYSQLHOST || databaseConnection?.hostname || "";
+const DB_USER = process.env.DB_USER || process.env.MYSQLUSER || databaseConnection?.username || "";
+const DB_PASSWORD = process.env.DB_PASSWORD || process.env.MYSQLPASSWORD || process.env.MYSQL_ROOT_PASSWORD || databaseConnection?.password || "";
+const DB_NAME = process.env.DB_NAME || process.env.MYSQLDATABASE || databaseConnection?.pathname?.slice(1) || "railway";
+const DB_PORT = Number(process.env.DB_PORT || process.env.MYSQLPORT || databaseConnection?.port) || 3306;
 
 if (!DB_HOST || !DB_USER || !DB_PASSWORD) {
     throw new Error("Missing database environment variables: DB_HOST, DB_USER, and DB_PASSWORD");
