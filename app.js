@@ -4,12 +4,11 @@ import mysql from "mysql2/promise";
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
-const IS_PRODUCTION = process.env.NODE_ENV === "production";
 
 const DB_HOST = process.env.DB_HOST || "";
 const DB_USER = process.env.DB_USER || "";
 const DB_PASSWORD = process.env.DB_PASSWORD || "";
-const DB_NAME = process.env.DB_NAME || "company_management";
+const DB_NAME = process.env.DB_NAME || "railway";
 const DB_PORT = Number(process.env.DB_PORT) || 3306;
 
 if (!DB_HOST || !DB_USER || !DB_PASSWORD) {
