@@ -101,20 +101,139 @@
         /* DASHBOARD */
 
         .welcome {
-            background: white;
-            padding: 30px;
+            background: linear-gradient(120deg, #1b2550, #3346a8 58%, #1aa681);
+            color: white;
+            padding: 34px;
             border-radius: 12px;
             margin-bottom: 25px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+            box-shadow: 0 14px 30px rgba(27, 37, 80, 0.2);
+            position: relative;
+            overflow: hidden;
         }
 
         .welcome h2 {
             margin-bottom: 10px;
+            font-size: 30px;
         }
 
         .welcome p {
-            color: #777;
+            color: rgba(255, 255, 255, 0.82);
             line-height: 1.6;
+            max-width: 620px;
+        }
+
+        .welcome::after {
+            content: "✦";
+            position: absolute;
+            right: 38px;
+            top: 12px;
+            color: rgba(255, 255, 255, 0.2);
+            font-size: 110px;
+            transform: rotate(12deg);
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 22px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .quick-action {
+            border: 1px solid rgba(255, 255, 255, 0.28);
+            background: rgba(255, 255, 255, 0.12);
+            color: white;
+            padding: 10px 14px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .quick-action:hover {
+            background: rgba(255, 255, 255, 0.22);
+        }
+
+        .dashboard-lower {
+            display: grid;
+            grid-template-columns: 1.35fr 1fr;
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .insight-panel {
+            background: white;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+        }
+
+        .insight-panel h3 {
+            margin-bottom: 5px;
+        }
+
+        .insight-panel > p {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        .progress-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+
+        .progress-row span:first-child {
+            width: 100px;
+            color: #596275;
+        }
+
+        .progress-track {
+            flex: 1;
+            height: 8px;
+            background: #edf0f5;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-value {
+            display: block;
+            height: 100%;
+            border-radius: inherit;
+            background: linear-gradient(90deg, #3346a8, #1aa681);
+        }
+
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-list li {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 13px 0;
+            border-bottom: 1px solid #edf0f5;
+            color: #596275;
+            font-size: 14px;
+        }
+
+        .activity-list li:last-child {
+            border-bottom: 0;
+        }
+
+        .activity-mark {
+            width: 30px;
+            height: 30px;
+            display: grid;
+            place-items: center;
+            border-radius: 8px;
+            background: #eaf8f3;
+            color: #128b68;
+            flex: 0 0 auto;
         }
 
         .cards {
@@ -374,6 +493,14 @@
             .search {
                 width: 100%;
             }
+
+            .dashboard-lower {
+                grid-template-columns: 1fr;
+            }
+
+            .welcome h2 {
+                font-size: 24px;
+            }
         }
 
     </style>
@@ -471,6 +598,12 @@
                 and payments from one place.
             </p>
 
+            <div class="quick-actions">
+                <button class="quick-action" onclick="showSection('companies')">＋ Add company</button>
+                <button class="quick-action" onclick="showSection('employees')">＋ Add employee</button>
+                <button class="quick-action" onclick="showSection('orders')">＋ New order</button>
+            </div>
+
         </div>
 
 
@@ -496,6 +629,38 @@
                 <p id="activeEmployeeCount">0</p>
             </div>
 
+        </div>
+
+        <div class="dashboard-lower">
+            <div class="insight-panel">
+                <h3>Operations overview</h3>
+                <p>Keep the core areas of your business moving.</p>
+                <div class="progress-row">
+                    <span>People</span>
+                    <div class="progress-track"><span class="progress-value" style="width: 82%"></span></div>
+                    <strong>82%</strong>
+                </div>
+                <div class="progress-row">
+                    <span>Customers</span>
+                    <div class="progress-track"><span class="progress-value" style="width: 68%"></span></div>
+                    <strong>68%</strong>
+                </div>
+                <div class="progress-row">
+                    <span>Projects</span>
+                    <div class="progress-track"><span class="progress-value" style="width: 54%"></span></div>
+                    <strong>54%</strong>
+                </div>
+            </div>
+
+            <div class="insight-panel">
+                <h3>Workspace activity</h3>
+                <p>Your management centre at a glance.</p>
+                <ul class="activity-list">
+                    <li><span class="activity-mark">✓</span><span>Database connection is ready.</span></li>
+                    <li><span class="activity-mark">↗</span><span>Review your latest employee records.</span></li>
+                    <li><span class="activity-mark">＋</span><span>Add a company to grow your workspace.</span></li>
+                </ul>
+            </div>
         </div>
 
     </section>
